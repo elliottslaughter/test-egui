@@ -185,6 +185,8 @@ pub fn viewer_ui(ui: &mut egui::Ui, rects: &Vec<AppRect>) -> egui::Response {
         // This is the click handler
     }
     if ui.is_rect_visible(rect) {
+        let mut mesh = Mesh::default();
+
         // Draw the widget
         let visuals = ui.style().interact_selectable(&response, false);
         // let rect = rect.expand(visuals.expansion);
@@ -194,9 +196,9 @@ pub fn viewer_ui(ui: &mut egui::Ui, rects: &Vec<AppRect>) -> egui::Response {
                 rect.lerp(r.r.right_bottom().to_vec2()),
             );
             let r2 = r2.expand(visuals.expansion);
-            ui.painter()
-                .rect(r2, 0.0, r.c, /*visuals.bg_fill,*/ visuals.bg_stroke);
+            mesh.add_colored_rect(r2, r.c);
         }
+        ui.painter().add(Shape::Mesh(mesh));
     }
     response
 }
